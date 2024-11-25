@@ -1,4 +1,7 @@
-// biome-ignore lint/correctness/useImportExtensions: using barrel file
-// biome-ignore lint/performance/noReExportAll: using barrel file
-// biome-ignore lint/performance/noBarrelFile: using barrel file
 export * from './primitive'
+export * from './button'
+export * from './form'
+export * from './text-field'
+export * from './loader'
+export * from './textarea'
+export * from './skeleton'
