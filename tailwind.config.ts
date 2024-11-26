@@ -2,7 +2,12 @@
 
 const config = {
   darkMode: ['class'],
-  content: [ "./src/pages/**/*.{js,ts,jsx,tsx,mdx}", "./src/components/**/*.{js,ts,jsx,tsx,mdx}", "./src/app/**/*.{js,ts,jsx,tsx,mdx}", ],
+  content: [
+    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/features/**/*.{js,ts,jsx,tsx,mdx}',
+  ],
   theme: {
     extend: {
       colors: {
@@ -20,42 +25,42 @@ const config = {
         },
         secondary: {
           DEFAULT: 'hsl(var(--secondary))',
-          fg: 'hsl(var(--secondary-fg))'
+          fg: 'hsl(var(--secondary-fg))',
         },
         tertiary: {
           DEFAULT: 'hsl(var(--tertiary))',
-          fg: 'hsl(var(--tertiary-fg))'
+          fg: 'hsl(var(--tertiary-fg))',
         },
         accent: {
           DEFAULT: 'hsl(var(--accent))',
           fg: 'hsl(var(--accent-fg))',
           subtle: 'hsl(var(--accent-subtle))',
-          'subtle-fg': 'hsl(var(--accent-subtle-fg))'
+          'subtle-fg': 'hsl(var(--accent-subtle-fg))',
         },
         success: {
           DEFAULT: 'hsl(var(--success))',
-          fg: 'hsl(var(--success-fg))'
+          fg: 'hsl(var(--success-fg))',
         },
         info: {
           DEFAULT: 'hsl(var(--info))',
-          fg: 'hsl(var(--info-fg))'
+          fg: 'hsl(var(--info-fg))',
         },
         danger: {
           DEFAULT: 'hsl(var(--danger))',
-          fg: 'hsl(var(--danger-fg))'
+          fg: 'hsl(var(--danger-fg))',
         },
         warning: {
           DEFAULT: 'hsl(var(--warning))',
-          fg: 'hsl(var(--warning-fg))'
+          fg: 'hsl(var(--warning-fg))',
         },
         muted: {
           DEFAULT: 'hsl(var(--muted))',
-          fg: 'hsl(var(--muted-fg))'
+          fg: 'hsl(var(--muted-fg))',
         },
         overlay: {
           DEFAULT: 'hsl(var(--overlay))',
-          fg: 'hsl(var(--overlay-fg))'
-        }
+          fg: 'hsl(var(--overlay-fg))',
+        },
       },
       borderRadius: {
         '3xl': 'calc(var(--radius) + 7.5px)',
@@ -63,14 +68,14 @@ const config = {
         xl: 'calc(var(--radius) + 2.5px)',
         lg: 'calc(var(--radius))',
         md: 'calc(var(--radius) - 2.5px)',
-        sm: 'calc(var(--radius) - 5px)'
-      }
-    }
+        sm: 'calc(var(--radius) - 5px)',
+      },
+    },
   },
   plugins: [
     require('tailwindcss-animate'),
-    require('tailwindcss-react-aria-components')
-  ]
+    require('tailwindcss-react-aria-components'),
+  ],
 }
 
 export default config

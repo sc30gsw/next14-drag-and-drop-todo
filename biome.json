@@ -37,7 +37,6 @@
   "overrides": [
     {
       "include": [
-        "next.config.mjs",
         "tailwind.config.ts",
         "layout.tsx",
         "page.tsx",
@@ -48,13 +47,22 @@
         "default.tsx",
         "route.ts",
         "lib/fetcher.ts",
-        "postcss.config.mjs"
+        "postcss.config.mjs",
+        "next.config.ts",
+        "components/ui/index.ts"
       ],
       "linter": {
         "rules": {
           "style": {
             "noDefaultExport": "off",
             "useNamingConvention": "off"
+          },
+          "performance": {
+            "noReExportAll": "off",
+            "noBarrelFile": "off"
+          },
+          "correctness": {
+            "useImportExtensions": "off"
           }
         }
       }

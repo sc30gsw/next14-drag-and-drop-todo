@@ -1,7 +1,8 @@
 'use client'
 
-import { ThemeProvider } from '@/components/theme-provider'
+import { QueryProvider } from '@/components/query-provider'
 import { useRouter } from 'next/navigation'
+import { NuqsAdapter } from 'nuqs/adapters/next/app'
 import type { ReactNode } from 'react'
 import { RouterProvider } from 'react-aria-components'
 
@@ -18,9 +19,9 @@ export function Providers({ children }: { children: ReactNode }) {
 
   return (
     <RouterProvider navigate={router.push}>
-      <ThemeProvider enableSystem={true} attribute="class">
-        {children}
-      </ThemeProvider>
+      <QueryProvider>
+        <NuqsAdapter>{children}</NuqsAdapter>
+      </QueryProvider>
     </RouterProvider>
   )
 }
