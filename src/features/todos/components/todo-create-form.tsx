@@ -7,13 +7,16 @@ import {
 import { useSafeForm } from '@/hooks/use-safe-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { IconX } from 'justd-icons'
+import { redirect } from 'next/navigation'
+import type { Models } from 'node-appwrite'
 import { Controller } from 'react-hook-form'
 
 type TodoCreateFormProps = {
+  user: Models.User<Models.Preferences> | null
   onToggle: () => void
 }
 
-export const TodoCreateForm = ({ onToggle }: TodoCreateFormProps) => {
+export const TodoCreateForm = ({ user, onToggle }: TodoCreateFormProps) => {
   const {
     control,
     handleSubmit,
@@ -29,6 +32,10 @@ export const TodoCreateForm = ({ onToggle }: TodoCreateFormProps) => {
   const { mutate: createTodo, isPending } = useTodoCreate()
 
   const onSubmit = (data: TodoSchema) => {
+    if (!user) {
+      redirect('/sign-in')
+    }
+
     createTodo(
       { json: data },
       {

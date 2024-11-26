@@ -25,7 +25,10 @@ export const AddButton = ({ user, searchParamsToggle }: AddButtonProps) => {
 
   return queryToggle.toggle ? (
     <div className="w-fit">
-      <TodoCreateForm onToggle={() => setQueryToggle({ toggle: false })} />
+      <TodoCreateForm
+        user={user}
+        onToggle={() => setQueryToggle({ toggle: false })}
+      />
     </div>
   ) : (
     <Button
