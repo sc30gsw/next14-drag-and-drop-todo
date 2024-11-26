@@ -17,3 +17,4 @@ export * from './heading';
 export * from './avatar';
 export * from './visually-hidden';
 export * from './link';
+export * from './modal';

@@ -33,11 +33,15 @@ export const UserButton = () => {
     return (
       <Menu>
         <Menu.Trigger>
-          <Button size="square-petite" appearance="outline">
+          <Button
+            size="square-petite"
+            appearance="outline"
+            className="border-none hover:bg-transparent hover:opacity-75"
+          >
             <IconDotsHorizontal />
           </Button>
         </Menu.Trigger>
-        <Menu.Content className="min-w-48" placement="bottom end">
+        <Menu.Content className="min-w-48" placement="bottom start">
           <Menu.Item>
             <Link
               href="/sign-in"
@@ -77,11 +81,26 @@ export const UserButton = () => {
           initials={avatarFallback}
         />
       </Menu.Trigger>
-      <Menu.Content className="min-w-48" placement="bottom end">
-        <Menu.Item>{name || 'User'}</Menu.Item>
-        <Menu.Item>{email}</Menu.Item>
+      <Menu.Content className="min-w-48" placement="bottom start">
+        <Menu.Item
+          isDisabled={isPending}
+          className="hover:bg-neutral-200 hover:text-neutral-900 cursor-pointer"
+        >
+          {name || 'User'}
+        </Menu.Item>
+        <Menu.Item
+          className="hover:bg-neutral-200 hover:text-neutral-900 cursor-pointer"
+          isDisabled={isPending}
+        >
+          {email}
+        </Menu.Item>
         <Menu.Separator />
-        <Menu.Item isDanger={true} onAction={() => logout()}>
+        <Menu.Item
+          className="hover:bg-rose-400 hover:text-white cursor-pointer"
+          isDisabled={isPending}
+          isDanger={true}
+          onAction={() => logout()}
+        >
           Log out
           <IconLogout />
         </Menu.Item>
