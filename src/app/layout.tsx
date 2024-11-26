@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import localFont from 'next/font/local'
 import './globals.css'
+import { Header } from '@/components/Header'
 import { Providers } from '@/components/providers'
 import type { ReactNode } from 'react'
 
@@ -26,7 +27,12 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Providers>{children}</Providers>
+        <Providers>
+          <Header />
+          <main className="bg-blue-100 min-h-dvh w-screen pt-20">
+            {children}
+          </main>
+        </Providers>
       </body>
     </html>
   )

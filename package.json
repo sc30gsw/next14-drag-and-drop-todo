@@ -19,12 +19,15 @@
     "hono": "^4.6.12",
     "justd-icons": "^1.8.1",
     "next": "15.0.3",
+    "next-theme": "^0.1.5",
     "node-appwrite": "^14.1.0",
     "nuqs": "^2.2.3",
     "react": "19.0.0-rc-66855b96-20241106",
     "react-aria-components": "^1.5.0",
     "react-dom": "19.0.0-rc-66855b96-20241106",
     "react-hook-form": "^7.53.2",
+    "react-stately": "^3.34.0",
+    "sonner": "^1.7.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {
