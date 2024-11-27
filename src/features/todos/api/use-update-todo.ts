@@ -38,6 +38,38 @@ export const useUpdateTodo = () => {
     onError: () => {
       toast.error('Failed to update todo')
     },
+    onMutate: async ({ json, param }) => {
+      // 現在のTodoクエリをキャンセル
+      await queryClient.cancelQueries({ queryKey: ['todos'] })
+
+      // 更新前のデータをスナップショット
+      const previousTodos = queryClient.getQueryData(['todos'])
+
+      // 楽観的更新を実行
+      queryClient.setQueryData(
+        ['todos'],
+        (
+          oldData: InferResponseType<typeof client.api.todos.$get> | undefined,
+        ) => {
+          if (!oldData) {
+            return oldData
+          }
+
+          return {
+            ...oldData,
+            todos: {
+              ...oldData.todos,
+              documents: oldData.todos.documents.map((todo) =>
+                todo.$id === param.todoId ? { ...todo, ...json } : todo,
+              ),
+            },
+          }
+        },
+      )
+
+      // エラー時にロールバックするための関数を返す
+      return { previousTodos }
+    },
   })
 
   return mutation

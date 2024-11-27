@@ -24,10 +24,38 @@ export const useTodoCreate = () => {
     onSuccess: () => {
       toast.success('Todo created')
       router.refresh()
-      queryClient.invalidateQueries({ queryKey: ['todos'] })
+      queryClient.invalidateQueries({ queryKey: ['todos'], exact: true })
     },
     onError: () => {
       toast.error('Failed to create todo')
+    },
+    onMutate: async ({json}) => {
+      // 現在のTodoクエリをキャンセル
+      await queryClient.cancelQueries({ queryKey: ['todos'] })
+
+      // 更新前のデータをスナップショット
+      const previousTodos = queryClient.getQueryData(['todos'])
+
+      // 楽観的更新を実行
+      queryClient.setQueryData(
+        ['todos'],
+        (
+          oldData: InferResponseType<typeof client.api.todos.$get> | undefined,
+        ) => {
+          if (!oldData) {
+            return oldData
+          }
+
+          return {
+            ...oldData,
+            todos: {
+              documents: [...oldData.todos.documents, json],
+            },
+          }
+        },
+      )
+      // エラー時にロールバックするための関数を返す
+      return { previousTodos }
     },
   })
 

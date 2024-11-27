@@ -12,7 +12,7 @@ import {
   IconPencilBox,
   IconTrash,
 } from 'justd-icons'
-import { type Dispatch, useReducer } from 'react'
+import { type Dispatch, useEffect, useReducer } from 'react'
 
 type Todo = InferResponseType<
   typeof client.api.todos.$get
@@ -23,7 +23,7 @@ type Props = {
 }
 
 export const TodoList = ({ todoItems }: Props) => {
-  const [todoList, todos] = useDragAndDrop<HTMLUListElement, Todo>(
+  const [todoList, todos, setValue] = useDragAndDrop<HTMLUListElement, Todo>(
     todoItems.todos.documents,
     {
       group: 'kanban',
@@ -32,6 +32,10 @@ export const TodoList = ({ todoItems }: Props) => {
       sortable: true,
     },
   )
+
+  useEffect(() => {
+    setValue(todoItems.todos.documents)
+  }, [todoItems, setValue])
 
   const [doingList, doings] = useDragAndDrop<HTMLUListElement, Todo>([], {
     group: 'kanban',
