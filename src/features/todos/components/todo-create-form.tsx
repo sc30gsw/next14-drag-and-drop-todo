@@ -61,6 +61,11 @@ export const TodoCreateForm = ({ user, onToggle }: TodoCreateFormProps) => {
               errorMessage={errors.name?.message}
               isDisabled={isPending}
               className="border border-neutral-400 rounded-md bg-white"
+              onFocus={() => {
+                if (!user) {
+                  redirect('/sign-in')
+                }
+              }}
             />
           )}
         />
