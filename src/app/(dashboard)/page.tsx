@@ -12,6 +12,14 @@ type HomeProps = {
 
 const Home = async ({ searchParams }: HomeProps) => {
   const { toggle } = await todoToggleSearchParamsCache.parse(searchParams)
+  // biome-ignore lint/suspicious/noConsoleLog: <explanation>
+  // biome-ignore lint/suspicious/noConsole: <explanation>
+  console.log('🚀 ~ Home ~ toggle:', toggle)
+
+  if (!toggle) {
+    return false
+  }
+
   const user = await getLoggedInUser()
 
   return (
