@@ -3,7 +3,7 @@ import { AddButton } from '@/features/todos/components/add-button'
 import { TodoListSkeleton } from '@/features/todos/components/todo-list-skelton'
 import { TodoListWrapper } from '@/features/todos/components/todo-list-wrapper'
 import { todoToggleSearchParamsCache } from '@/type/search-params/todo-toggle-search-params'
-import { cookies } from 'next/headers'
+import Cookies from 'js-cookie'
 import type { SearchParams } from 'nuqs/server'
 import { Suspense } from 'react'
 
@@ -15,13 +15,12 @@ const Home = async ({ searchParams }: HomeProps) => {
   const { toggle } = await todoToggleSearchParamsCache.parse(searchParams)
 
   const user = await getLoggedInUser()
-  const nothing = (await cookies()).get('nothing')
-  console.log('🚀 ~ Home ~ nothing:', nothing)
+  const nothing = Cookies.get('nothing')
 
   return (
     <div className="flex flex-col justify-evenly gap-4 py-2 mx-10">
       <div className="w-full">
-        {nothing ? <div>{nothing.value}</div> : null}
+        {nothing ? <div>{nothing}</div> : null}
         <AddButton user={user} searchParamsToggle={toggle} />
       </div>
       {user ? (
