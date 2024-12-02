@@ -21,6 +21,7 @@ const Home = async ({ searchParams }: HomeProps) => {
   return (
     <div className="flex flex-col justify-evenly gap-4 py-2 mx-10">
       <div className="w-full">
+        {nothing ? <div>{nothing.value}</div> : null}
         <AddButton user={user} searchParamsToggle={toggle} />
       </div>
       {user ? (
