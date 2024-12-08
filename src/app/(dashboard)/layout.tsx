@@ -1,4 +1,4 @@
-import { Header } from '@/components/Header'
+import { Header } from '@/components/app-header'
 import type { ReactNode } from 'react'
 
 const DashboardLayout = ({
