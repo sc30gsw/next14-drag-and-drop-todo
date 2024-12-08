@@ -1,15 +1,12 @@
 import { Button, Form, Loader, TextField } from '@/components/ui'
-import { useTodoCreate } from '@/features/todos/api/use-todo-create'
-import {
-  type TodoSchema,
-  todoSchema,
-} from '@/features/todos/schema/todo-schema'
-import { useSafeForm } from '@/hooks/use-safe-form'
-import { zodResolver } from '@hookform/resolvers/zod'
+import { todoSchema } from '@/features/todos/schema/todo-schema'
+import { createTodoAction } from '@/features/todos/server/create-todo-action'
+import { getFormProps, getInputProps, useForm } from '@conform-to/react'
+import { getZodConstraint, parseWithZod } from '@conform-to/zod'
 import { IconX } from 'justd-icons'
 import { redirect } from 'next/navigation'
 import type { Models } from 'node-appwrite'
-import { Controller } from 'react-hook-form'
+import { useActionState } from 'react'
 
 type TodoCreateFormProps = {
   user: Models.User<Models.Preferences> | null
@@ -17,58 +14,34 @@ type TodoCreateFormProps = {
 }
 
 export const TodoCreateForm = ({ user, onToggle }: TodoCreateFormProps) => {
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-    reset,
-  } = useSafeForm<TodoSchema>({
-    resolver: zodResolver(todoSchema),
-    defaultValues: {
-      name: '',
+  const [lastResult, action, isPending] = useActionState(createTodoAction, null)
+  const [form, fields] = useForm({
+    constraint: getZodConstraint(todoSchema),
+    lastResult,
+    onValidate({ formData }) {
+      return parseWithZod(formData, { schema: todoSchema })
     },
   })
 
-  const { mutate: createTodo, isPending } = useTodoCreate()
-
-  const onSubmit = (data: TodoSchema) => {
-    if (!user) {
-      redirect('/sign-in')
-    }
-
-    createTodo(
-      { json: data },
-      {
-        onSuccess: () => {
-          reset()
-        },
-      },
-    )
-  }
-
   return (
     <div className="border border-neutral-400 bg-slate-700 rounded-md p-4 h-fit mt-4">
-      <Form onSubmit={handleSubmit(onSubmit)}>
-        <Controller
-          control={control}
-          name="name"
-          render={({ field }) => (
-            <TextField
-              {...field}
-              type="text"
-              isRequired={true}
-              placeholder="タスクを入力..."
-              errorMessage={errors.name?.message}
-              isDisabled={isPending}
-              className="border border-neutral-400 rounded-md bg-white"
-              onFocus={() => {
-                if (!user) {
-                  redirect('/sign-in')
-                }
-              }}
-            />
-          )}
+      <Form {...getFormProps(form)} action={action}>
+        <TextField
+          {...getInputProps(fields.name, { type: 'text' })}
+          placeholder="Enter your task"
+          label="Task"
+          errorMessage={''}
+          onFocus={() => {
+            if (!user) {
+              redirect('/sign-in')
+            }
+          }}
+          isDisabled={isPending}
+          className="[&>label]:text-white"
         />
+        <span id={fields.name.errorId} className="mt-1 text-sm text-red-500">
+          {fields.name.errors}
+        </span>
         <div className="flex justify-start mt-2 gap-2">
           <Button
             type="submit"

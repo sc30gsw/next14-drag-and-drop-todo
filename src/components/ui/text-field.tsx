@@ -77,7 +77,10 @@ const TextField = ({
             {prefix}
           </span>
         ) : null}
-        <Input placeholder={placeholder} />
+        <Input
+          placeholder={placeholder}
+          className="bg-white border border-neutral-400 rounded-md"
+        />
         {isRevealable ? (
           <ButtonPrimitive
             type="button"
