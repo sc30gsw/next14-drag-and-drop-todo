@@ -46,8 +46,6 @@ export const SignUpForm = () => {
               placeholder="Enter your name"
               errorMessage={errors.name?.message}
               isDisabled={isPending}
-              maxWidth="350px"
-              width="350px"
             />
           )}
         />
@@ -63,8 +61,6 @@ export const SignUpForm = () => {
               placeholder="Enter your email"
               errorMessage={errors.email?.message}
               isDisabled={isPending}
-              maxWidth="350px"
-              width="350px"
             />
           )}
         />
@@ -80,8 +76,6 @@ export const SignUpForm = () => {
               placeholder="Enter your password"
               errorMessage={errors.password?.message}
               isDisabled={isPending}
-              maxWidth="350px"
-              width="350px"
             />
           )}
         />

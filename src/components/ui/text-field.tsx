@@ -27,8 +27,6 @@ interface BaseTextFieldProps extends TextFieldPrimitiveProps, FieldProps {
   suffix?: ReactNode
   isPending?: boolean
   className?: string
-  maxWidth?: string
-  width?: string
 }
 
 interface RevealableTextFieldProps extends BaseTextFieldProps {
@@ -54,8 +52,6 @@ const TextField = ({
   className,
   isRevealable,
   type,
-  maxWidth,
-  width = '100%',
   ...props
 }: TextFieldProps) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false)
@@ -73,7 +69,6 @@ const TextField = ({
       type={inputType}
       {...props}
       className={ctr(className, 'group flex flex-col gap-y-1.5')}
-      style={{ width, maxWidth }}
     >
       {label && <Label>{label}</Label>}
       <FieldGroup data-loading={isPending ? 'true' : undefined}>

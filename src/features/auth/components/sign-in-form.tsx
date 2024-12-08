@@ -45,8 +45,6 @@ export const SignInForm = () => {
               placeholder="Enter your email"
               errorMessage={errors.email?.message}
               isDisabled={isPending}
-              maxWidth="350px"
-              width="350px"
             />
           )}
         />
@@ -62,8 +60,6 @@ export const SignInForm = () => {
               placeholder="Enter your password"
               errorMessage={errors.password?.message}
               isDisabled={isPending}
-              maxWidth="350px"
-              width="350px"
             />
           )}
         />
