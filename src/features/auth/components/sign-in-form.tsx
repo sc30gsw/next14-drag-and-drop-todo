@@ -2,67 +2,55 @@
 
 import '@/zod-error-map-utils'
 import { Button, Card, Form, Loader, TextField } from '@/components/ui'
-import { useLogin } from '@/features/auth/api/use-login'
-import {
-  type LoginSchema,
-  loginSchema,
-} from '@/features/auth/schema/login-schema'
-import { useSafeForm } from '@/hooks/use-safe-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { Controller } from 'react-hook-form'
+import { loginSchema } from '@/features/auth/schema/login-schema'
+import { signInAction } from '@/features/auth/server/sign-in-action'
+import { getFormProps, getInputProps, useForm } from '@conform-to/react'
+import { getZodConstraint, parseWithZod } from '@conform-to/zod'
+import { useActionState } from 'react'
 
 export const SignInForm = () => {
-  const {
-    handleSubmit,
-    control,
-    formState: { errors },
-  } = useSafeForm<LoginSchema>({
-    resolver: zodResolver(loginSchema),
-    defaultValues: {
-      email: '',
-      password: '',
+  const [lastResult, action, isPending] = useActionState(signInAction, null)
+
+  const [form, fields] = useForm({
+    constraint: getZodConstraint(loginSchema),
+    lastResult,
+    onValidate({ formData }) {
+      return parseWithZod(formData, { schema: loginSchema })
     },
   })
 
-  const { mutate, isPending } = useLogin()
-
-  const onSubmit = (data: LoginSchema) => {
-    mutate({ json: data })
-  }
-
   return (
-    <Form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
+    <Form
+      {...getFormProps(form)}
+      className="flex flex-col gap-4"
+      action={action}
+    >
       <Card.Content className="space-y-8">
-        <Controller
-          control={control}
-          name="email"
-          render={({ field }) => (
-            <TextField
-              {...field}
-              type="email"
-              label="Email"
-              isRequired={true}
-              placeholder="Enter your email"
-              errorMessage={errors.email?.message}
-              isDisabled={isPending}
-            />
-          )}
+        <TextField
+          {...getInputProps(fields.email, { type: 'email' })}
+          placeholder="Enter your email"
+          label="Email"
+          errorMessage={''}
+          isDisabled={isPending}
+          className="w-[350px]"
         />
-        <Controller
-          control={control}
-          name="password"
-          render={({ field }) => (
-            <TextField
-              {...field}
-              type="password"
-              label="Password"
-              isRequired={true}
-              placeholder="Enter your password"
-              errorMessage={errors.password?.message}
-              isDisabled={isPending}
-            />
-          )}
+        <span id={fields.email.errorId} className="mt-1 text-sm text-red-500">
+          {fields.email.errors}
+        </span>
+
+        <TextField
+          {...getInputProps(fields.password, { type: 'password' })}
+          placeholder="Enter your password"
+          label="Password"
+          errorMessage={''}
+          isDisabled={isPending}
         />
+        <span
+          id={fields.password.errorId}
+          className="mt-1 text-sm text-red-500"
+        >
+          {fields.password.errors}
+        </span>
       </Card.Content>
       <Card.Footer>
         <Button

@@ -2,83 +2,65 @@
 
 import '@/zod-error-map-utils'
 import { Button, Card, Form, Loader, TextField } from '@/components/ui'
-import { useRegister } from '@/features/auth/api/use-register'
-import {
-  type SignUpSchema,
-  signUpSchema,
-} from '@/features/auth/schema/signup-schema'
-import { useSafeForm } from '@/hooks/use-safe-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { Controller } from 'react-hook-form'
+import { signUpSchema } from '@/features/auth/schema/signup-schema'
+import { signUpAction } from '@/features/auth/server/sign-up-action'
+import { getFormProps, getInputProps, useForm } from '@conform-to/react'
+import { getZodConstraint, parseWithZod } from '@conform-to/zod'
+import { useActionState } from 'react'
 
 export const SignUpForm = () => {
-  const {
-    handleSubmit,
-    control,
-    formState: { errors },
-  } = useSafeForm<SignUpSchema>({
-    resolver: zodResolver(signUpSchema),
-    defaultValues: {
-      name: '',
-      email: '',
-      password: '',
+  const [lastResult, action, isPending] = useActionState(signUpAction, null)
+
+  const [form, fields] = useForm({
+    constraint: getZodConstraint(signUpSchema),
+    lastResult,
+    onValidate({ formData }) {
+      return parseWithZod(formData, { schema: signUpSchema })
     },
   })
 
-  const { mutate, isPending } = useRegister()
-
-  const onSubmit = (data: SignUpSchema) => {
-    mutate({ json: data })
-  }
-
   return (
-    <Form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
+    <Form
+      {...getFormProps(form)}
+      className="flex flex-col gap-4"
+      action={action}
+    >
       <Card.Content className="space-y-8">
-        <Controller
-          control={control}
-          name="name"
-          render={({ field }) => (
-            <TextField
-              {...field}
-              type="text"
-              label="Name"
-              isRequired={true}
-              placeholder="Enter your name"
-              errorMessage={errors.name?.message}
-              isDisabled={isPending}
-            />
-          )}
+        <TextField
+          {...getInputProps(fields.name, { type: 'text' })}
+          placeholder="Enter your name"
+          label="Name"
+          errorMessage={''}
+          isDisabled={isPending}
         />
-        <Controller
-          control={control}
-          name="email"
-          render={({ field }) => (
-            <TextField
-              {...field}
-              type="email"
-              label="Email"
-              isRequired={true}
-              placeholder="Enter your email"
-              errorMessage={errors.email?.message}
-              isDisabled={isPending}
-            />
-          )}
+        <span id={fields.name.errorId} className="mt-1 text-sm text-red-500">
+          {fields.name.errors}
+        </span>
+
+        <TextField
+          {...getInputProps(fields.email, { type: 'email' })}
+          placeholder="Enter your email"
+          label="Email"
+          errorMessage={''}
+          isDisabled={isPending}
         />
-        <Controller
-          control={control}
-          name="password"
-          render={({ field }) => (
-            <TextField
-              {...field}
-              type="password"
-              label="Password"
-              isRequired={true}
-              placeholder="Enter your password"
-              errorMessage={errors.password?.message}
-              isDisabled={isPending}
-            />
-          )}
+        <span id={fields.email.errorId} className="mt-1 text-sm text-red-500">
+          {fields.email.errors}
+        </span>
+
+        <TextField
+          {...getInputProps(fields.password, { type: 'password' })}
+          placeholder="Enter your password"
+          label="Password"
+          errorMessage={''}
+          isDisabled={isPending}
         />
+        <span
+          id={fields.password.errorId}
+          className="mt-1 text-sm text-red-500"
+        >
+          {fields.password.errors}
+        </span>
       </Card.Content>
       <Card.Footer>
         <Button
