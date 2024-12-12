@@ -5,6 +5,7 @@ import { todoSchema } from '@/features/todos/schema/todo-schema'
 import { client } from '@/lib/rpc'
 import { getSessionCookie } from '@/utils/session-cookie'
 import { parseWithZod } from '@conform-to/zod'
+import { revalidateTag } from 'next/cache'
 import { redirect } from 'next/navigation'
 
 export const createTodoAction = async (_: unknown, formData: FormData) => {
@@ -37,5 +38,5 @@ export const createTodoAction = async (_: unknown, formData: FormData) => {
     throw new Error('Failed to create todo')
   }
 
-  redirect('/?toggle=true')
+  revalidateTag('todos')
 }
